@@ -1,6 +1,31 @@
-# 30319 Laboratorio 2
+# 30319 Laboratorio 2: Interfaz de usuario.
 
-Este repositorio contiene los recursos para el laboratorio 2 de la asignatura de Sistemas Electrónicos con Microprocesadores (otoño 2025).
+## Introducción
+
+Este laboratorio se centra en la implementación de una interfaz de usuario básica utilizando pulsadores y LEDs en la placa de desarrollo Cypress FM4. Los estudiantes aprenderán a gestionar entradas digitales mediante pulsadores, implementar técnicas de detección de pulsaciones (cortas y largas) y controlar salidas visuales a través de LEDs.
+
+## Objetivos
+
+- Configurar y gestionar pines GPIO para entradas (pulsadores) y salidas (LEDs).
+- Implementar una función de detección de pulsaciones que distinga entre pulsaciones cortas y largas.
+- Modelar en software una máquina de estados para gestionar la lógica de la interfaz de usuario.
+
+## Ejercicios del Laboratorio
+
+### Ejercicio 2.1: Detección de Pulsaciones
+
+- Implementar la función `pulsaciones()` que detecta pulsaciones cortas y largas en un pulsador conectado a un pin GPIO.
+  Esta función, utiliza una MEF (Máquina de Estados Finitos) para gestionar los estados del pulsador y el tiempo de pulsación.
+- El test de la función `pulsaciones()` se realiza mediante simulación.
+
+### Ejercicio 2.2: Establecer una base de tiemmpos
+
+- Configurar un temporizador para generar interrupciones periódicas cada 1 ms.
+
+### Ejercicio 2.3: Control de LEDs gobernado por el pulsador
+
+- Utilizar la función `pulsaciones()` para cambiar el estado de un LED cada vez que se detecta una pulsación corta.
+- Se utiliza SysTick para la base de tiempos de 1 ms.
 
 ## Estructura del proyecto
 
@@ -21,16 +46,7 @@ Este repositorio contiene los recursos para el laboratorio 2 de la asignatura de
 - **HAL**: Capa de abstracción para facilitar el acceso a periféricos y recursos hardware.
 - **src**: Implementación de los ejercicios y ejemplos del laboratorio.
 - **test**: Código de test
-- 
+-
 ## Cómo compilar
 
-El proyecto está preparado para ser compilado con Keil uVision. Abre el archivo `lab2.uvprojx` en la carpeta `build_keil/` y selecciona el target deseado.
-
-## Autores
-
-- Docentes de la asignatura Sistemas Electrónicos con Microprocesadores
-- Universidad de Zaragoza
-
-## Contacto
-
-Para dudas o sugerencias, contactar con el equipo docente a través de los canales oficiales de la asignatura.
+El proyecto está preparado para ser compilado con Keil uVision. Abre el archivo `lab2.uvprojx` en la carpeta `build_keil/` y selecciona el *target* deseado.
