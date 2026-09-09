@@ -1,9 +1,16 @@
 /** @file test_pulsaciones.c
  *  @brief Banco de pruebas para la función pulsaciones()
  *
- *  Este banco de pruebas verifica el correcto funcionamiento de la función
- *  pulsaciones() que detecta pulsaciones cortas y largas de un pulsador.
- *  Se simulan diferentes escenarios de uso, incluyendo rebotes y ruido.
+ *  Este banco genera secuencias de entrada para analizar el comportamiento de
+ *  pulsaciones() mediante el Logic Analyzer de Keil.
+ *
+ *  No realiza una comprobación automática de aprobado/error. El estudiante debe
+ *  comparar las trazas de g_sw2 y g_pls con el comportamiento previsto por el
+ *  diseño de su MEF.
+ *
+ *  Se incluyen escenarios de reposo, pulsación corta, pulsación larga y ruido
+ *  en la entrada. Con un muestreo de 1 ms, el rebote físico del pulsador no se
+ *  modela en estas pruebas.
  *
  *  @author Isidro Urriza
  *  @date 2025-09-01
@@ -26,15 +33,15 @@ int main() {
   pulsaciones(g_sw2, 1);
 
   //--------------------------------------------------------------------------
-  // Test 1: Verifica que la salida se mantiene a 0 mientras no haya ninguna
-  // pulsación Se ejecuta varias veces para asegurar que el sistema es estable
-  // en reposo
+  // Caso 1: Genera muestras en reposo.
+  // En Analyzer, comprobar que g_pls se mantiene a 0.
   for (uint8_t i = 0; i < 5; i++) {
     g_pls = pulsaciones(g_sw2, 0);
   }
 
   // --------------------------------------------------------------------------
-  // Test 2: Simula una pulsación corta seguida de un espacio
+  // Caso 2: Genera una pulsación corta seguida de un intervalo sin pulsar.
+  // En Analyzer, localizar un único evento de pulsación corta (g_pls = 1).
   // Primero se activa el pulsador (g_sw2 = 1) durante 5 llamadas
   for (uint8_t i = 0; i < 5; i++) {
     g_sw2 = 1;
@@ -47,7 +54,8 @@ int main() {
   }
 
   // --------------------------------------------------------------------------
-  // Test 3: Simula una pulsación larga seguida de un espacio
+  // Caso 3: Genera una pulsación larga seguida de un intervalo sin pulsar.
+  // En Analyzer, localizar un único evento de pulsación larga (g_pls = 2).
   // Se mantiene el pulsador activo por un tiempo de TIEMPO1 llamadas
   for (uint16_t i = 0; i < TIEMPO1; i++) {
     g_sw2 = 1;
@@ -61,7 +69,8 @@ int main() {
   }
 
   // --------------------------------------------------------------------------
-  // Test 4: Simula una pulsación corta seguida de un espacio con ruido
+  // Caso 4: Genera una pulsación corta seguida de una secuencia de ruido.
+  // En Analyzer, comprobar que el ruido no produce eventos adicionales.
   // Se activa el pulsador durante un tiempo corto
   for (uint8_t i = 0; i < 15; i++) {
     g_sw2 = 1;
@@ -90,7 +99,8 @@ int main() {
   }
 
   // --------------------------------------------------------------------------
-  // Test 5: Simula una pulsación extra larga seguida de un espacio
+  // Caso 5: Genera una pulsación extra larga seguida de un intervalo sin pulsar.
+  // En Analyzer, comprobar que sólo se genera un evento de pulsación larga.
   // Se mantiene el pulsador activo por un tiempo muy largo (600 llamadas)
   for (uint16_t i = 0; i < TIEMPO1 + 200; i++) {
     g_sw2 = 1;
@@ -104,9 +114,17 @@ int main() {
   }
 
   // --------------------------------------------------------------------------
-  // Fin del test - todas las pruebas pasaron correctamente
+  // --------------------------------------------------------------------------
+  // Caso adicional diseñado por la pareja
+  //
+  // Describe aquí la secuencia de entrada, el resultado esperado y la
+  // evidencia que se observará en Analyzer. No modifiques los casos 1 a 5.
+  //
+  // ...
+
+  // Fin de las secuencias de estímulo.
+  // Detenerse aquí para revisar las trazas g_sw2 y g_pls en Analyzer.
   while (1) {
-    // Bucle infinito para indicar que el test ha finalizado correctamente
     __asm volatile ("BKPT #0"); // Punto de parada para depuración
   }
 }
