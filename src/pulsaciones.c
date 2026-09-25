@@ -15,9 +15,7 @@
  * @return  1      pulsación corta.
  * @return  2      pulsación larga.
  *
- * @note  Diagrama de estados implementado: https://tinyurl.com/4wa7e3hw
- *
- *        Los umbrales de duración de una pulsación se definen en pulsaciones.h
+ * @note    Los umbrales de duración de una pulsación se definen en pulsaciones.h
  */
 uint8_t pulsaciones (uint8_t pulsado, uint8_t reset)
 {
