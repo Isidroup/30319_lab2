@@ -19,7 +19,7 @@
  *
  *        Los umbrales de duración de una pulsación se definen en pulsaciones.h
  */
-uint8_t pulsaciones (const uint8_t pulsado, const uint8_t reset)
+uint8_t pulsaciones (uint8_t pulsado, uint8_t reset)
 {
 
 }

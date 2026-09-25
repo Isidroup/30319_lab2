@@ -37,7 +37,7 @@
  *
  * @note  Diagrama de estados implementado: https://tinyurl.com/4wa7e3hw
  */
-uint8_t pulsaciones (const uint8_t pulsado, const uint8_t reset);
+uint8_t pulsaciones (uint8_t pulsado, uint8_t reset);
 
 
 #endif /* PULSACIONES_H_ */
