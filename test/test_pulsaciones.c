@@ -24,6 +24,21 @@ __attribute__((section(".bss.noinit"))) uint8_t
     g_sw2; // Simula el estado del pulsador (0 = no presionado, 1 = presionado)
 uint8_t g_pls; // Almacena el resultado de la función pulsaciones
 
+
+/**
+ * @brief  Genera un retardo aproximado de 1 ms.
+ * @param  None
+ * @retval None
+ * @note   El valor 848 se ajusta para el modelo de MCU del simulador (12 MHz).
+ */
+void custom_delay_1ms(void) {
+    volatile uint32_t count = 848; // Ajustar para calibrar el retardo a 1 ms
+    while (count > 0) {
+        count--;
+    }
+}
+
+
 int main() {
 
   // Reset e inicialización de la función pulsaciones
@@ -36,6 +51,8 @@ int main() {
   // Caso 1: Genera muestras en reposo.
   // En Analyzer, comprobar que g_pls se mantiene a 0.
   for (uint8_t i = 0; i < 5; i++) {
+    custom_delay_1ms();
+    g_sw2 = 0;
     g_pls = pulsaciones(g_sw2, 0);
   }
 
@@ -44,12 +61,15 @@ int main() {
   // En Analyzer, localizar un único evento de pulsación corta (g_pls = 1).
   // Primero se activa el pulsador (g_sw2 = 1) durante 5 llamadas
   for (uint8_t i = 0; i < 5; i++) {
+    custom_delay_1ms();
     g_sw2 = 1;
     g_pls = pulsaciones(g_sw2, 0);
   }
   // Se desactiva el pulsador
   g_sw2 = 0;
   for (uint16_t i = 0; i <= TIEMPO2; i++) {
+    custom_delay_1ms();
+    g_sw2 = 0;
     g_pls = pulsaciones(g_sw2, 0);
   }
 
@@ -58,12 +78,14 @@ int main() {
   // En Analyzer, localizar un único evento de pulsación larga (g_pls = 2).
   // Se mantiene el pulsador activo por un tiempo de TIEMPO1 llamadas
   for (uint16_t i = 0; i < TIEMPO1; i++) {
+    custom_delay_1ms();
     g_sw2 = 1;
     g_pls = pulsaciones(g_sw2, 0);
   }
 
   // Se suelta el pulsador
   for (uint16_t i = 0; i <= TIEMPO2; i++) {
+    custom_delay_1ms();
     g_sw2 = 0;
     g_pls = pulsaciones(g_sw2, 0);
   }
@@ -73,21 +95,25 @@ int main() {
   // En Analyzer, comprobar que el ruido no produce eventos adicionales.
   // Se activa el pulsador durante un tiempo corto
   for (uint8_t i = 0; i < 15; i++) {
+    custom_delay_1ms();
     g_sw2 = 1;
     g_pls = pulsaciones(g_sw2, 0);
   }
 
   // Se simula ruido en el pulsador alternando su estado varias veces
   for (uint8_t j = 0; j < 3; j++) {
-    // Ruido pulsador desactivado
-    g_sw2 = 0;
     for (uint8_t i = 0; i < 5; i++) {
+      custom_delay_1ms();
+      // Ruido pulsador desactivado
+      g_sw2 = 0;
       g_pls = pulsaciones(g_sw2, 0);
     }
 
-    // Ruido pulsador activado
-    g_sw2 = 1;
+
     for (uint8_t i = 0; i < 5; i++) {
+      custom_delay_1ms();
+      // Ruido pulsador activado
+      g_sw2 = 1;
       g_pls = pulsaciones(g_sw2, 0);
     }
   }
@@ -95,6 +121,8 @@ int main() {
   // Se estabiliza en pulsador desactivado
   g_sw2 = 0;
   for (uint16_t i = 0; i <= TIEMPO2; i++) {
+    custom_delay_1ms();
+    g_sw2 = 0;
     g_pls = pulsaciones(g_sw2, 0);
   }
 
@@ -103,12 +131,14 @@ int main() {
   // En Analyzer, comprobar que sólo se genera un evento de pulsación larga.
   // Se mantiene el pulsador activo por un tiempo muy largo (600 llamadas)
   for (uint16_t i = 0; i < TIEMPO1 + 200; i++) {
+    custom_delay_1ms();
     g_sw2 = 1;
     g_pls = pulsaciones(g_sw2, 0);
   }
 
   // Se libera el pulsador y se verifica que la salida vuelve a 0
   for (uint16_t i = 0; i <= TIEMPO2; i++) {
+    custom_delay_1ms();
     g_sw2 = 0;
     g_pls = pulsaciones(g_sw2, 0);
   }
