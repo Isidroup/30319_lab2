@@ -210,8 +210,8 @@ uint8_t Sw2Read(void)
 
 #define TOP (0x03FF)
 
-void breath_led(const Leds_t led) 
-	{
+void breath_led(const Leds_t led)
+    {
     static uint32_t time_counter = 0;
     static uint16_t pwm_counter = 0;
 
@@ -225,6 +225,16 @@ void breath_led(const Leds_t led)
     pwm_counter = (pwm_counter + 1) & TOP;
 }
 
+void breath_rgb(const rgb_color_t color) {
+    static uint32_t time_counter = 0;
+    static uint16_t pwm_counter = 0;
 
+    time_counter++;
+    uint16_t sawtooth = (time_counter >> 10) & TOP;
+    uint16_t triangle = (sawtooth < (TOP >> 1)) ? sawtooth : (TOP - sawtooth);
+    uint16_t brightness = triangle >> 2;
 
+    LedRGB((brightness >= pwm_counter) ? color : OFF);
 
+    pwm_counter = (pwm_counter + 1) & TOP;
+}
